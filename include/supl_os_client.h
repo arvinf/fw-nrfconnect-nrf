@@ -10,6 +10,9 @@
 #include <nrf_socket.h>
 #include <supl_session.h>
 
+#if CONFIG_NRF9160_GPS
+#include <drivers/gps.h>
+#endif
 /**
  * @file supl_os_client.h
  *
@@ -28,7 +31,11 @@
  * @return 0  SUPL session was successful.
  *         <0 SUPL session failed.
  */
+#if CONFIG_NRF9160_GPS
+int supl_session(const struct gps_agps_request *const agps_request);
+#else
 int supl_session(const nrf_gnss_agps_data_frame_t *const agps_request);
+#endif
 
 /**
  * @brief Setup the API and the buffers required by

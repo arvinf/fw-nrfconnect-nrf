@@ -371,6 +371,7 @@ wait:
 				raw_gps_data.agps.data_flags &
 				BIT(NRF_GNSS_AGPS_INTEGRITY_REQUEST) ? 1 : 0;
 
+			evt.agps_request.data_flags = raw_gps_data.agps.data_flags;
 			notify_event(dev, &evt);
 			continue;
 		default:

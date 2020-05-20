@@ -126,9 +126,9 @@ enum gps_agps_type {
 	GPS_AGPS_ALMANAC			= 3,
 	GPS_AGPS_KLOBUCHAR_CORRECTION		= 4,
 	GPS_AGPS_NEQUICK_CORRECTION		= 5,
-	GPS_AGPS_GPS_SYSTEM_CLOCK_AND_TOWS	= 7,
-	GPS_AGPS_LOCATION			= 8,
-	GPS_AGPS_INTEGRITY			= 9,
+	GPS_AGPS_GPS_SYSTEM_CLOCK_AND_TOWS	= 6,
+	GPS_AGPS_LOCATION			= 7,
+	GPS_AGPS_INTEGRITY			= 8,
 };
 
 struct gps_agps_request {
@@ -140,6 +140,8 @@ struct gps_agps_request {
 				 * which the assistance GPS almanac data is
 				 * needed.
 				 */
+
+	uint32_t data_flags;
 	uint8_t utc:1;		/* GPS UTC parameters. */
 	uint8_t klobuchar:1;	/* Klobuchar parameters. */
 	uint8_t nequick:1;		/* NeQuick parameters. */

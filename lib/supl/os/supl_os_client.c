@@ -115,7 +115,8 @@ static int create_device_id(void)
 	return 0;
 }
 
-int supl_session(const nrf_gnss_agps_data_frame_t *const agps_request)
+#if CONFIG_NRF9160_GPS
+int supl_session(const struct gps_agps_request *const agps_request)
 {
 	create_device_id();
 
@@ -125,9 +126,40 @@ int supl_session(const nrf_gnss_agps_data_frame_t *const agps_request)
 
 	return supl_client_session(&supl_client_ctx);
 }
+#else
+int supl_session(const nrf_gnss_agps_data_frame_t *const agps_request)
+{
+	// int rc;
+	create_device_id();
+
+	supl_client_ctx.agps_types.data_flags = agps_request->data_flags;
+	supl_client_ctx.agps_types.sv_mask_alm = agps_request->sv_mask_alm;
+	supl_client_ctx.agps_types.sv_mask_ephe = agps_request->sv_mask_ephe;
+
+	// rc = supl_client_session(&supl_client_ctx);
+
+	// k_free(bufs.pri_buf);
+	// k_free(bufs.sec_buf);
+
+	return supl_client_session(&supl_client_ctx);
+}
+#endif
 
 int supl_init(const struct supl_api *const api)
 {
+	// bufs.pri_buf_size = LIBSUPL_PRI_BUF_SIZE;
+	// bufs.pri_buf 	  = k_malloc(LIBSUPL_PRI_BUF_SIZE);
+	// if (bufs.pri_buf == NULL) {
+	// 	return -ENOMEM;
+	// }
+
+	// bufs.sec_buf_size = LIBSUPL_SEC_BUF_SIZE;
+	// bufs.sec_buf 	  = k_malloc(LIBSUPL_SEC_BUF_SIZE);
+	// if (bufs.sec_buf == NULL) {
+	// 	k_free(bufs.pri_buf);
+	// 	return -ENOMEM;
+	// }
+
 	if (supl_client_init(api, &bufs) != 0) {
 		LOG_ERR("Failed to initialize libsupl");
 		return -1;
